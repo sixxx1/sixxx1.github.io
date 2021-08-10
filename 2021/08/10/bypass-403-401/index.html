@@ -25,7 +25,7 @@
   <link rel="stylesheet" type="text/css" href="/./style/main.css">
 	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-	<title>Hello World</title>
+	<title>绕过403和401错误</title>
   
   <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
   </script>
@@ -40,7 +40,7 @@
 <div class="navbar-header">
   <a class="blog-title" href="/">Sixxx1</a>
   <a class="face-img" href="/">
-    <img src="https://avatars.githubusercontent.com/u/13416353?v=4">
+    <img src="img/avatar.jpeg">
   </a>
 </div>
 <main>
@@ -48,7 +48,7 @@
     
   
   <h1 class="title">
-    Hello World
+    绕过403和401错误
   </h1>
   
 
@@ -56,11 +56,11 @@
     <ul class="article-info">
       <li>
         发布
-        <time datetime="2021-08-09T14:00:00.150Z" itemprop="datePublished">2021-08-09</time>
+        <time datetime="2021-08-10T04:08:11.000Z" itemprop="datePublished">2021-08-10</time>
       </li>
       <li>
         
-    更新 <time datetime="2021-08-09T14:00:00.150Z" itemprop="dateUpdated">2021-08-09</time>
+    更新 <time datetime="2021-08-10T04:13:51.801Z" itemprop="dateUpdated">2021-08-10</time>
 
       </li>
       <li id="busuanzi_container_page_pv">
@@ -72,27 +72,26 @@
     <div class="article">
       <div class="content">
         
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h4 id="1-添加Headers头："><a href="#1-添加Headers头：" class="headerlink" title="1. 添加Headers头："></a>1. 添加Headers头：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Originating-IP, X-Remote-IP, X-Client-IP, X-Forwarded-For etc.</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>有时候加入这些白名单IP就可以传输敏感数据，</p>
+<h4 id="2-跟着unicode字符："><a href="#2-跟着unicode字符：" class="headerlink" title="2. 跟着unicode字符："></a>2. 跟着unicode字符：</h4><p>尝试插入unicode字符去绕过，比如 <code>% = ca</code>, <code>%=sa</code>，这些列表可以google找到，所以如果<code>/cadmin</code>被阻断了，可以试试用 <code>%dmin</code>。</p>
+<h4 id="3-重写headers头中的url："><a href="#3-重写headers头中的url：" class="headerlink" title="3. 重写headers头中的url："></a>3. 重写headers头中的url：</h4><p>比如GET /admin是403，可以试试：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /accessible</span><br><span class="line"><span class="attribute">X-Original-URL</span><span class="punctuation">: </span>/admin OR</span><br><span class="line"><span class="attribute">X-Override-URL</span><span class="punctuation">: </span>/admin OR</span><br><span class="line"><span class="attribute">X-Rewrite-URL</span><span class="punctuation">: </span> /admin OR ....</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h4 id="4-尝试各种的payload："><a href="#4-尝试各种的payload：" class="headerlink" title="4. 尝试各种的payload："></a>4. 尝试各种的payload：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /admin 				-&gt; 403</span><br><span class="line">    /accessible/..;/admin 		-&gt; 200</span><br><span class="line">    /.;/admin				-&gt; 200</span><br><span class="line">    /admin;/				-&gt; 200</span><br><span class="line">    /admin/~				-&gt; 200</span><br><span class="line">    /./admin/./				-&gt; 200</span><br><span class="line">    /admin?param			-&gt; 200</span><br><span class="line">    /%2e/admin				-&gt; 200</span><br><span class="line">    /admin#				-&gt; 200</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h4 id="5-转换请求方法："><a href="#5-转换请求方法：" class="headerlink" title="5. 转换请求方法："></a>5. 转换请求方法：</h4><p>   例如把GET改为POST。</p>
+<h4 id="6-通过IP、Vhost："><a href="#6-通过IP、Vhost：" class="headerlink" title="6. 通过IP、Vhost："></a>6. 通过IP、Vhost：</h4><blockquote>
+<p>Access the site via its IP or Vhost to get the forbidden content.</p>
+</blockquote>
+<p>   就是从旁站入手吧。</p>
+<h4 id="7-Fuzzing："><a href="#7-Fuzzing：" class="headerlink" title="7. Fuzzing："></a>7. Fuzzing：</h4><p>爆破文件和目录等。</p>
 
       </div>
-        <div class="support-author">
-          <p>感谢您的阅读。 🙏
-          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
-            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
-          </p>
-        </div>
+        <!-- <div class="support-author">
+             </div>
+        -->
         <!--
             <div class="like ">
               <div class="like-button">
@@ -143,6 +142,45 @@
   </div>
 </div>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true, 
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
 
 <script>//console
   var consoleConfig = ''.split(',');
