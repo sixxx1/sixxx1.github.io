@@ -203,11 +203,11 @@ svg.icon {
     line-height: 1.5;
     color: #555555; }
     .category li a:hover {
-      border: 1px solid #6bd95b; }
+      border: 1px solid #4b97ff;}
   .category li .active {
-    background: #6bd95b;
+    background: #60adff;
     color: #ffffff;
-    border: 1px solid #6bd95b; }
+    border: 1px solid #60adff;}
 
 .list {
   float: left;
@@ -862,3 +862,40 @@ svg.icon {
     display: none; } }
 
 /*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZS9tYWluLmNzcyIsInNvdXJjZVJvb3QiOiIifQ==*/
+
+.toc-article {
+    background: #eee;
+    margin: 0 0 0 .5em;
+    padding: 1em
+}
+.toc-article strong {
+    padding: .3em 0
+}
+
+#toc {
+    line-height: 1.6em;
+    /*font-size: .8em;*/
+    float: right;
+    position: fixed;
+    right: 100px;
+}
+#toc .toc {
+    padding: 0
+}
+#toc .toc li {
+    list-style-type: none;
+    margin-top: 2px;
+}
+#toc ol {
+    margin-left: 0
+}
+#toc .toc-child {
+    padding-left: 1.5em
+}
+#toc a.toc-link{
+  color: #555;
+}
+#toc a.toc-link:hover{
+  color: #111;
+}
+

